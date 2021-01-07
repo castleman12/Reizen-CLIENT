@@ -1,18 +1,7 @@
-import React from 'react'
-import Home from './components/Pages/home';
-import './App.css';
-import ReactDOM, { render } from 'react-dom';
-import { DatePicker, message } from 'antd';
-import 'antd/dist/antd.css';
-import './index.css';
-import  { FC } from 'react';
-import { Button } from 'antd';
-import './App.css';
-import { Typography, Space } from 'antd';
-import Auth from './components/Auth/Auth'
-
-
-const { Text, Link } = Typography;
+import React from 'react';
+import { setConstantValue } from 'typescript';
+import Auth from "../Auth/Auth"
+import './home.css';
 
 type Data = {
   search: string,
@@ -64,7 +53,4 @@ class Login extends React.Component<{}, Data> {
  
 }
 
-
 export default Login;
-
-
