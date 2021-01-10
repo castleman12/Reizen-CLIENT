@@ -52,7 +52,7 @@ type propTypes = {
 }
 
 
-class Login extends React.Component<propTypes, states> {
+class Login extends React.Component<{}, states> {
     constructor(props: states) {
         super(props)
         this.state = {
@@ -61,17 +61,17 @@ class Login extends React.Component<propTypes, states> {
          email: "",
          userRole: "user",
          password: "",
-         updateToken: this.props.updateRole,
-         updateUserId: this.props.updateUserId,
-         updateRole: this.props.updateRole,
+         updateToken: this.state.updateRole,
+         updateUserId: this.state.updateUserId,
+         updateRole: this.state.updateRole,
          message: "",
         
       
         errorInfo: {
         
-            updateToken: this.props.updateRole,
-            updateUserId: this.props.updateUserId,
-            updateRole: this.props.updateRole,
+            updateToken: this.state.updateRole,
+            updateUserId: this.state.updateUserId,
+            updateRole: this.state.updateRole,
              loginToggler: true,
              message: "",
 
@@ -99,9 +99,9 @@ class Login extends React.Component<propTypes, states> {
         password: "",
         userRole: "user",
         message: "",
-        updateToken: this.props.updateRole,
-        updateUserId: this.props.updateUserId,
-        updateRole: this.props.updateRole,
+        updateToken: this.state.updateRole,
+        updateUserId: this.state.updateUserId,
+        updateRole: this.state.updateRole,
         loginToggler: !this.state.loginToggler
         
         
@@ -132,9 +132,9 @@ class Login extends React.Component<propTypes, states> {
         .then((response) => response.json())
         .then(data => {
           if(data.sessionToken){
-          this.props.updateToken(data.sessionToken) 
-          this.props.updateUserId(data.user.id)
-          this.props.updateRole(data.user.userType)
+          this.state.updateToken(data.sessionToken) 
+          this.state.updateUserId(data.user.id)
+          this.state.updateRole(data.user.userType)
         
         } })
         
@@ -160,9 +160,9 @@ class Login extends React.Component<propTypes, states> {
       .then((response) => response.json())
       .then(data => {
         if(data.sessionToken){
-        this.props.updateToken(data.sessionToken) 
-        this.props.updateUserId(data.user.id)
-        this.props.updateRole(data.user.userType)
+        this.state.updateToken(data.sessionToken) 
+        this.state.updateUserId(data.user.id)
+        this.state.updateRole(data.user.userType)
       
         } 
         
