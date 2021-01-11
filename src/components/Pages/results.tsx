@@ -5,6 +5,8 @@ import search from './search'
 
 import { Route, Redirect } from "react-router-dom";
 
+
+
 class results extends React.Component<{}, search> {
    
 //       fetch(`https://test.api.amadeus.com/v2/shopping/flight-offers?originLocationCode=${from}&destinationLocationCode=${to}&departureDate=${date}&adults=1&travelClass=ECONOMY&nonStop=false&max=1`, {
@@ -15,7 +17,13 @@ class results extends React.Component<{}, search> {
 //     }
 //     fetchResults()
 //     }, [])
-
+render() {
+    return (
+        <div>
+            <h1>Hey</h1>
+        </div>
+    )
+}
 
  }
 

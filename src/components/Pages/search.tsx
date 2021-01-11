@@ -1,22 +1,26 @@
 import React from 'react';
 import Auth from "../Auth/Auth"
 import './home.css';
-import { SearchBar, Button, WhiteSpace, WingBlank } from 'antd-mobile';
-import { Route, Redirect } from "react-router-dom";
+import { Form, Input,Button, Typography, } from 'antd';
+import { SearchBar,  WhiteSpace, WingBlank } from 'antd-mobile';
+import { Route, Redirect, Link } from "react-router-dom";
+import Results from './results'
 
 
   type Function = {
-    value: string
+    to: string
+    from: string
     searchTerm: string
   }
 
-
+ 
   class Search extends React.Component<{}, Function> {
     constructor(props: Function) {
       super(props)
       this.state = {
     
-      value: "",
+      to: "",
+      from: "",
       searchTerm: ""
       
       } 
@@ -28,24 +32,36 @@ import { Route, Redirect } from "react-router-dom";
       <Redirect to="./results"  />
     }
 
- 
+   
 
-    clear = () => {
-      this.setState({ value: '' });
-    };
 
     render() {
       return (<div>
+        <Form>
         <WingBlank><div className="sub-title">Normal</div></WingBlank>
-        <SearchBar placeholder="From" value="From" maxLength={3} />
-        <SearchBar placeholder="To" value="To" maxLength={3} />
+        <Form.Item>
+        <SearchBar placeholder="From" maxLength={3}     onChange={(event) => {                 
+                  this.setState({
+                    from: this.state.from
+                  });  
+                  }} />
+        </Form.Item>
+        <Form.Item>
+        <SearchBar placeholder="To" maxLength={3}  onChange={(event) => {                 
+                  this.setState({
+                    to: this.state.to
+                  });  
+                  }}  />
+        </Form.Item>
         <WhiteSpace />
-      
+        <Form.Item>
+      <Link to = "/results">  <Button color="inherit" id="Submit" htmlType="submit">Search for Flights!</Button> </Link>
+         </Form.Item>
         <WhiteSpace />
        
         <WhiteSpace />
-       
-        <SearchBar
+       </Form>
+        {/* <SearchBar
           value={this.state.value}
           placeholder="Search"
           onSubmit={this.onSubmit}
@@ -55,7 +71,7 @@ import { Route, Redirect } from "react-router-dom";
           onCancel={() => console.log('onCancel')}
           showCancelButton
           // onChange={this.onChange}
-        />
+        /> */}
        
       </div>);
     }

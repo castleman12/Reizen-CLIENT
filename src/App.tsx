@@ -8,24 +8,38 @@ import './index.css';
 import  { FC } from 'react';
 import { Button } from 'antd';
 import './App.css'; 
-import { Route, BrowserRouter, Redirect } from "react-router-dom";
+import { Route, BrowserRouter, Redirect, Switch } from "react-router-dom";
 import { Typography, Space } from 'antd';
 import Auth from './components/Auth/Auth'
 import Search from './components/Pages/search'
+import Results from './components/Pages/results'
+
 
 
 const { Text, Link } = Typography;
 
-type Data = {
+<Switch>
+<Route exact path="/">
+  <Home />
+</Route>
+<Route path="/search">
+  <Search />
+</Route>
+<Route path="/results">
+  <Results />
+</Route>
+</Switch>
+
+type states = {
   search: string|null,
   token: string|null,
   userId: string|null,
   role: string|null
 
 }
-class Login extends React.Component<{}, Data> {
+class App extends React.Component<{}, states> {
   _isMounted = false
-  constructor(props: Data) {
+  constructor(props: any) {
       super(props)
       this.state = {
     
@@ -34,6 +48,9 @@ class Login extends React.Component<{}, Data> {
       userId: null,
       role: null
       } 
+      this.updateToken = this.updateToken.bind(this)
+      this.updateRole = this.updateRole.bind(this)
+      this.updateUserId = this.updateRole.bind(this)
     }
     componentWillUnmount(){
       this._isMounted = false;
@@ -46,12 +63,13 @@ class Login extends React.Component<{}, Data> {
               role: localStorage.getItem('role'),
               userId: localStorage.getItem("userId")
           });
-        }
+        }   
+     
   }
       updateToken = (newToken: string) => {
         this.setState({token: newToken})
         localStorage.setItem('token', newToken)
-        
+        console.log(this.state.token)
       }
 
       updateUserId = (newUserId: string) => {
@@ -59,7 +77,16 @@ class Login extends React.Component<{}, Data> {
         localStorage.setItem('userId', newUserId)
       
       }
+
+      updateRole = (newRole: string) => {
+        this.setState({role: newRole})
+        localStorage.setItem('role', newRole)
+      
+      }
+
+   
      
+   
 
 
 
@@ -70,8 +97,8 @@ class Login extends React.Component<{}, Data> {
   render() {
     return (
       <BrowserRouter >
-    < Route>
-     {this.state.token !== "" ? <Auth /> : <Search />}
+    < Route exact path ="/">
+     {localStorage.getItem('token') == "" ? <Auth updateToken={this.updateToken} / > : <Search /> }
    </Route>
    </BrowserRouter>
     )
@@ -80,6 +107,6 @@ class Login extends React.Component<{}, Data> {
 }
 
 
-export default Login;
+export default App;
 
 
