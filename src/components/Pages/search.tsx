@@ -177,6 +177,7 @@ import { PlacementsConfig } from 'antd/lib/tooltip';
         ReturnDate: string
         loginToggler: boolean
         itemToggler: boolean
+        flightToggler: boolean
   
     
   }
@@ -190,6 +191,7 @@ import { PlacementsConfig } from 'antd/lib/tooltip';
             ReturnDate: "",
             loginToggler: true,
             itemToggler: true,
+            flightToggler: true,
   
           }
           this.onFinish = this.onFinish.bind(this)
@@ -197,6 +199,7 @@ import { PlacementsConfig } from 'antd/lib/tooltip';
       }
      
         onFinish = (values: any) => {
+          
           console.log('Success: ', values)
           
            fetch(`${APIURL}/trip`, {
@@ -214,7 +217,7 @@ import { PlacementsConfig } from 'antd/lib/tooltip';
           })
           .then((response) => response.json())
           .catch(() => console.log("Can’t access response. Blocked by browser?"))
-         
+      
         
         }
 
@@ -377,6 +380,20 @@ import { PlacementsConfig } from 'antd/lib/tooltip';
           })
           console.log(this.state.loginToggler)
         }
+        flightToggle = (event: React.MouseEvent<HTMLButtonElement>) => {
+          event.preventDefault();
+          this.setState({
+            FlightTo: "",
+            FlightFrom: "",
+            ArrivalDate: "",
+            ReturnDate: "",
+            loginToggler: this.state.loginToggler,
+            itemToggler: this.state.itemToggler,
+            flightToggler: !this.state.flightToggler
+    
+          })
+          console.log(this.state.loginToggler)
+        }
 onFinishFailed = (errorInfo: any) => {
           console.log('Failed:', errorInfo)
         }
@@ -434,7 +451,7 @@ onFinishFailed = (errorInfo: any) => {
             label="FlightFrom"
             name="flightfrom"
             rules={[{ required: true, message: 'Where are you coming from?' }]}>
-            <Input />
+            <Input onChange={(e) => this.setState({ FlightFrom: e.target.value})}/>
           </Form.Item>
           <Form.Item
             label="FlightTo"
@@ -543,6 +560,20 @@ onFinishFailed = (errorInfo: any) => {
 <br/>
 <br/>
             <Button onClick={this.ItemDelete}>Delete an Item!</Button>
+
+            <Button onClick={this.flightToggle}>See Items!</Button>
+              {this.state.flightToggler ?
+                          <div>
+            
+            {console.log(this.state.FlightFrom.toString)}
+            {console.log(this.state.FlightTo.valueOf)}
+            {console.log(this.state.ArrivalDate)}
+            {console.log(this.state.ReturnDate)}
+            </div>
+            :
+            null
+}
+           
         {/* <SearchBar
           value={this.state.value}
           placeholder="Search"
