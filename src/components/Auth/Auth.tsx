@@ -66,7 +66,7 @@ class Login extends Component<AcceptedProps , states > {
         // values.preventDefault()
         console.log('Success: ', values)
         {this.state.loginToggler ? 
-         fetch(`http://localhost:3000/user/login`, {
+         fetch(`${APIURL}/user/login`, {
           method: 'POST',
            headers: new Headers( {
             'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ class Login extends Component<AcceptedProps , states > {
   
         } })
       :  
-       fetch(`http://localhost:3000/user/register`, {
+       fetch(`${APIURL}/user/register`, {
         method: 'POST',
         headers: new Headers( {
           'Content-Type': 'application/json',

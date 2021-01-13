@@ -199,7 +199,7 @@ import { PlacementsConfig } from 'antd/lib/tooltip';
         onFinish = (values: any) => {
           console.log('Success: ', values)
           
-           fetch(`https://jw-reizen.herokuapp.com/trip`, {
+           fetch(`${APIURL}/trip`, {
             method: 'POST',
              headers: {
               'Content-Type': 'application/json',
@@ -221,7 +221,7 @@ import { PlacementsConfig } from 'antd/lib/tooltip';
         Delete = (values: any) => {
           console.log('Success: ', values)
           
-           fetch(`https://jw-reizen.herokuapp.com/trip/delete`, {
+           fetch(`${APIURL}/trip/delete`, {
             method: 'DELETE',
              headers: {
               'Content-Type': 'application/json',
@@ -337,7 +337,7 @@ import { PlacementsConfig } from 'antd/lib/tooltip';
         ItemDelete = (values: any) => {
           console.log('Success: ', values)
           
-           fetch(`https://jw-reizen.herokuapp.com/packingItems/delete`, {
+           fetch(`${APIURL}/packingItems/delete`, {
             method: 'DELETE',
              headers: {
               'Content-Type': 'application/json',
