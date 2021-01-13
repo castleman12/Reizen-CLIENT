@@ -65,7 +65,7 @@ class Login extends Component<AcceptedProps , states > {
       onFinish = (values: any) => {
         console.log('Success: ', values)
         {this.state.loginToggler ? 
-         fetch(`${APIURL}/user/login`, {
+         fetch(`https://jw-reizen.herokuapp.com/user/login`, {
           method: 'POST',
            headers: {
             'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ class Login extends Component<AcceptedProps , states > {
   
         } })
       :  
-       fetch(`${APIURL}/user/register`, {
+       fetch(`https://jw-reizen.herokuapp.com/user/register`, {
         method: 'POST',
          headers: {
           'Content-Type': 'application/json',
