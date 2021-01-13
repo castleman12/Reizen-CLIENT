@@ -6,6 +6,7 @@ import { Route, Redirect } from 'react-router-dom'
 import { render } from '@testing-library/react';
 import App from '../../App'
 import Search from '../Pages/search'
+import APIURL from '../../helpers/environment'
 
 interface AcceptedProps {
   updateToken: (token: string) => void
@@ -64,7 +65,7 @@ class Login extends Component<AcceptedProps , states > {
       onFinish = (values: any) => {
         console.log('Success: ', values)
         {this.state.loginToggler ? 
-         fetch('https://jw-reizen.herokuapp.com/user/login', {
+         fetch(`${APIURL}/user/login`, {
           method: 'POST',
            headers: {
             'Content-Type': 'application/json',
@@ -82,7 +83,7 @@ class Login extends Component<AcceptedProps , states > {
   
         } })
       :  
-       fetch('https://jw-reizen.herokuapp.com/user/register', {
+       fetch(`${APIURL}/user/register`, {
         method: 'POST',
          headers: {
           'Content-Type': 'application/json',

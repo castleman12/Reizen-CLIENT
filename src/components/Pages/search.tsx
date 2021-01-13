@@ -7,7 +7,7 @@ import { Route, Redirect, Link } from "react-router-dom";
 import App from '../../App'
 import Results from './results'
 import APISearch from './results'
-
+import APIURL from '../../helpers/environment'
 import moment from 'moment';
 import { PlacementsConfig } from 'antd/lib/tooltip';
 
@@ -197,7 +197,7 @@ import { PlacementsConfig } from 'antd/lib/tooltip';
         onFinish = (values: any) => {
           console.log('Success: ', values)
           
-           fetch('https://jw-reizen.herokuapp.com/trip', {
+           fetch(`${APIURL}/trip`, {
             method: 'POST',
              headers: {
               'Content-Type': 'application/json',
@@ -219,7 +219,7 @@ import { PlacementsConfig } from 'antd/lib/tooltip';
         Delete = (values: any) => {
           console.log('Success: ', values)
           
-           fetch('https://jw-reizen.herokuapp.com/trip/delete', {
+           fetch(`${APIURL}/trip/delete`, {
             method: 'DELETE',
              headers: {
               'Content-Type': 'application/json',
@@ -237,7 +237,7 @@ import { PlacementsConfig } from 'antd/lib/tooltip';
         Update = (values: any) => {
           console.log('Success: ', values)
           
-           fetch('https://jw-reizen.herokuapp.com/trip', {
+           fetch(`${APIURL}/trip`, {
             method: 'PUT',
              headers: {
               'Content-Type': 'application/json',
