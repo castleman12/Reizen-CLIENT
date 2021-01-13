@@ -78,6 +78,7 @@ class Login extends Component<AcceptedProps , states > {
         .then(data => {
           if(data.sessionToken){
           this.state.updateToken(data.sessionToken) 
+          .catch(() => console.log("Can’t access response. Blocked by browser?"))
   
         } })
       :  
@@ -85,6 +86,7 @@ class Login extends Component<AcceptedProps , states > {
         method: 'POST',
          headers: {
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
          }, 
         body: JSON.stringify({
           email: values.email,
@@ -96,6 +98,8 @@ class Login extends Component<AcceptedProps , states > {
       .then(data => {
         if(data.sessionToken){
         this.state.updateToken(data.sessionToken) 
+
+        .catch(() => console.log("Can’t access response. Blocked by browser?"))
 
         }    
        

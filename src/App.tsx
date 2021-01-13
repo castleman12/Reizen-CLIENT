@@ -90,14 +90,17 @@ class App extends React.Component<{}, states> {
 
       
   render() {
-    return(  (localStorage.getItem('token') == "" ?
+    return( 
+      
     <div>
+
     <Router>
      <Auth updateToken={this.updateToken}/>
     </Router>
-    
+     {localStorage.getItem('token') ?   <Search/> : null }
+     
     </div>
-    : <Search   /> )
+ 
   
 //    <Switch>
 
