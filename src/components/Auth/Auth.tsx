@@ -87,7 +87,7 @@ class Login extends Component<AcceptedProps , states > {
         method: 'POST',
          headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
+          
          }, 
         body: JSON.stringify({
           email: values.email,
