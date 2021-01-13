@@ -176,6 +176,7 @@ import { PlacementsConfig } from 'antd/lib/tooltip';
         ArrivalDate: string,
         ReturnDate: string
         loginToggler: boolean
+        itemToggler: boolean
   
     
   }
@@ -188,6 +189,7 @@ import { PlacementsConfig } from 'antd/lib/tooltip';
             ArrivalDate: "",
             ReturnDate: "",
             loginToggler: true,
+            itemToggler: true,
   
           }
           this.onFinish = this.onFinish.bind(this)
@@ -237,7 +239,7 @@ import { PlacementsConfig } from 'antd/lib/tooltip';
         Update = (values: any) => {
           console.log('Success: ', values)
           
-           fetch(`https://jw-reizen.herokuapp.com/trip`, {
+           fetch(`${APIURL}/trip`, {
             method: 'PUT',
              headers: {
               'Content-Type': 'application/json',
@@ -256,6 +258,99 @@ import { PlacementsConfig } from 'antd/lib/tooltip';
         
         }
 
+        ItemCreate = (values: any) => {
+          console.log('Success: ', values)
+          
+           fetch(`${APIURL}/packingList/create`, {
+            method: 'POST',
+             headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `${localStorage.getItem("token")}`
+             }, 
+            body: JSON.stringify( {
+              TripID: values.TripID
+              }  ), 
+          })
+          .then((response) => response.json())
+          .catch(() => console.log("Can’t access response. Blocked by browser?"))
+         
+        
+          fetch(`${APIURL}/packingList/create`, {
+            method: 'POST',
+             headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `${localStorage.getItem("token")}`
+             }, 
+            body: JSON.stringify( {
+              TripID: values.TripID
+              }  ), 
+          })
+          .then((response) => response.json())
+          .catch(() => console.log("Can’t access response. Blocked by browser?"))
+         
+          fetch(`${APIURL}/packingItems`, {
+            method: 'POST',
+             headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `${localStorage.getItem("token")}`
+             }, 
+            body: JSON.stringify( {
+              ItemName: values.ItemName,
+              UserID: values.user.id,
+              PackingID: values.PackingID,
+              createdAt: "2021-01-13 10:20:15.658-06",
+              updatedAt: "2021-01-13 10:20:15.658-06",
+              packingListId: 3
+              }  ), 
+          })
+          .then((response) => response.json())
+          .catch(() => console.log("Can’t access response. Blocked by browser?"))
+         
+        
+        }
+
+
+        
+        ItemUpdate = (values: any) => {
+          console.log('Success: ', values)
+          
+           fetch(`${APIURL}/packingItems`, {
+            method: 'PUT',
+             headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `${localStorage.getItem("token")}`
+             }, 
+            body: JSON.stringify( {
+              ItemName: values.ItemName,
+              UserID: values.user.id,
+              PackingID: values.PackingID,
+              createdAt: "2021-01-13 10:20:15.658-06",
+              updatedAt: "2021-01-13 10:20:15.658-06",
+              packingListId: 3
+              }  ), 
+          })
+          .then((response) => response.json())
+          .catch(() => console.log("Can’t access response. Blocked by browser?"))
+         
+        }
+
+        ItemDelete = (values: any) => {
+          console.log('Success: ', values)
+          
+           fetch(`https://jw-reizen.herokuapp.com/packingItems/delete`, {
+            method: 'DELETE',
+             headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `${localStorage.getItem("token")}`
+             }
+             
+            
+          })
+          .then((response) => response.json())
+          .catch(() => console.log("Can’t access response. Blocked by browser?"))
+         
+        
+        }
         loginToggle = (event: React.MouseEvent<HTMLButtonElement>) => {
           event.preventDefault();
           this.setState({
@@ -264,6 +359,20 @@ import { PlacementsConfig } from 'antd/lib/tooltip';
             ArrivalDate: "",
             ReturnDate: "",
             loginToggler: !this.state.loginToggler,
+            itemToggler: this.state.itemToggler
+    
+          })
+          console.log(this.state.loginToggler)
+        }
+        itemToggle = (event: React.MouseEvent<HTMLButtonElement>) => {
+          event.preventDefault();
+          this.setState({
+            FlightTo: "",
+            FlightFrom: "",
+            ArrivalDate: "",
+            ReturnDate: "",
+            loginToggler: this.state.loginToggler,
+            itemToggler: !this.state.itemToggler,
     
           })
           console.log(this.state.loginToggler)
@@ -353,12 +462,87 @@ onFinishFailed = (errorInfo: any) => {
         </Form>
 
        }
-        <Button onClick={this.Delete}>Delete a Flight!</Button>
-  
-
-        <Button type="primary"  onClick={this.loginToggle}>
-              Add/Delete
+      
+          <Button type="primary"  onClick={this.loginToggle}>
+              Add/Edit
             </Button>
+  
+ <br/>
+       <br/>
+        <Button onClick={this.Delete}>Delete a Flight!</Button>
+     
+            {this.state.itemToggler ? 
+            <div>
+            <Form
+        {...layout}
+          name="basic"
+          initialValues={{ remember: true }}
+          onFinish={this.ItemCreate}
+          onFinishFailed={this.onFinishFailed}
+          className="form">
+          <Form.Item
+            label="ItemName"
+            name="itemname"
+            rules={[{ required: true, message: "What item do you want to add?" }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="UserID"
+            name="userid"
+            rules={[{ required: true, message: 'Insert ID' }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="PackingID"
+            name="packingID"
+            rules={[{ required: true, message: 'What trip is this for?' }]}>
+            <Input />
+            </Form.Item>
+           
+          <Form.Item {...tailLayout}>  
+<Button  color="inherit" htmlType="submit" id="Submit">Add Item!</Button> 
+          </Form.Item>
+ </Form>  
+    </div> 
+:
+<div>
+                   <Form
+        {...layout}
+          name="basic"
+          initialValues={{ remember: true }}
+          onFinish={this.ItemUpdate}
+          onFinishFailed={this.onFinishFailed}
+          className="form">
+          <Form.Item
+            label="ItemName"
+            name="itemname"
+            rules={[{ required: true, message: "What item do you want to add?" }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="UserID"
+            name="userid"
+            rules={[{ required: true, message: 'Insert ID' }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="PackingID"
+            name="packingID"
+            rules={[{ required: true, message: 'What trip is this for?' }]}>
+            <Input />
+            </Form.Item>
+           
+          <Form.Item {...tailLayout}>  
+<Button  color="inherit" htmlType="submit" id="Submit">Update Item!</Button> 
+          </Form.Item>
+</Form>
+ </div>   }
+<Button type="primary"  onClick={this.itemToggle}>
+              Add/Edit
+            </Button>
+<br/>
+<br/>
+            <Button onClick={this.ItemDelete}>Delete an Item!</Button>
         {/* <SearchBar
           value={this.state.value}
           placeholder="Search"

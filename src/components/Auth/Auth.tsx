@@ -63,16 +63,18 @@ class Login extends Component<AcceptedProps , states > {
       console.log(this.state.loginToggler)
     }
       onFinish = (values: any) => {
+        // values.preventDefault()
         console.log('Success: ', values)
         {this.state.loginToggler ? 
-         fetch(`https://jw-reizen.herokuapp.com/user/login`, {
+         fetch(`http://localhost:3000/user/login`, {
           method: 'POST',
-           headers: {
+           headers: new Headers( {
             'Content-Type': 'application/json',
-           }, 
+           }), 
+           
           body: JSON.stringify({
-            email: values.email,
-            password: values.password,
+            email: this.state.email,
+            password: this.state.password,
           }), 
         })
         .then((response) => response.json())
@@ -83,12 +85,11 @@ class Login extends Component<AcceptedProps , states > {
   
         } })
       :  
-       fetch(`https://jw-reizen.herokuapp.com/user/register`, {
+       fetch(`http://localhost:3000/user/register`, {
         method: 'POST',
-         headers: {
+        headers: new Headers( {
           'Content-Type': 'application/json',
-          
-         }, 
+         }),
         body: JSON.stringify({
           email: values.email,
           password: values.password,

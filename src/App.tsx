@@ -94,11 +94,13 @@ class App extends React.Component<{}, states> {
     return( 
       
     <div>
-
+<h1>Reizen</h1>
+<h3>The pretentious travel site</h3>
     <Router>
      <Auth updateToken={this.updateToken}/>
+     <Search/>
     </Router>
-     {localStorage.getItem('token') ?   <Search/> : null }
+     {/* {localStorage.getItem('token') ?    : null } */}
      
     </div>
  

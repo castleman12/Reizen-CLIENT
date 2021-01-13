@@ -1,46 +1,20 @@
-# Getting Started with Create React App
+# Welcome to Reizen
+# The pretentious flight and packing list creator!
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+To get started, please login using a (valid) email and (secret) password!
 
-## Available Scripts
+After you have logged in, you now have the option to create your own flight plan! This includes where you're going, where you're leaving from, when you plan on leaving, and when you plan on returning!
 
-In the project directory, you can run:
+When you create a flight, it'll save to your profile and from there you can create a packing list for that trip!
+This way when the trip comes up, you'll know exactly what you need for it!
 
-### `npm start`
+You can add, edit, or delete any item off the list! Just hit the "Add/Edit" button to add an item or to update an existing item, or the delete button if you don't want that item at all!
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+You can also add, edit, or delete any flights and trips you've made! Got caught in a pandemic? No problem, just delete the trip and now you don't need that PTSD anymore!
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+You can also click the "Add/Edit" button to change to the edit form where you can update any trips you've made!
 
-### `npm test`
+Once you're done with all this, just click the logout button and you're good to go, with all your trips kept secret and safe from trip spies!
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Hope you enjoyed Reizen! 
