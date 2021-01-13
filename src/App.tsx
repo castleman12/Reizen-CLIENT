@@ -8,33 +8,29 @@ import './index.css';
 import  { FC } from 'react';
 import { Button } from 'antd';
 import './App.css'; 
-import { Route, BrowserRouter, Redirect, Switch } from "react-router-dom";
+import { Route, BrowserRouter as Router, Redirect, Switch } from "react-router-dom";
 import { Typography, Space } from 'antd';
 import Auth from './components/Auth/Auth'
 import Search from './components/Pages/search'
 import Results from './components/Pages/results'
+import APISearch from './components/Pages/results'
 
 
 
 const { Text, Link } = Typography;
 
-<Switch>
-<Route exact path="/">
-  <Home />
-</Route>
-<Route path="/search">
-  <Search />
-</Route>
-<Route path="/results">
-  <Results />
-</Route>
-</Switch>
+
 
 type states = {
   search: string|null,
   token: string|null,
   userId: string|null,
   role: string|null
+  Destination: string
+  From: string
+  Date: string
+  APISearch:Function
+
 
 }
 class App extends React.Component<{}, states> {
@@ -46,11 +42,18 @@ class App extends React.Component<{}, states> {
       search: null,
       token: null,
       userId: null,
-      role: null
+      role: null,
+      Date: "",
+      From: "",
+      Destination: "",
+      APISearch: new Function
+
       } 
       this.updateToken = this.updateToken.bind(this)
       this.updateRole = this.updateRole.bind(this)
       this.updateUserId = this.updateRole.bind(this)
+ 
+      
     }
     componentWillUnmount(){
       this._isMounted = false;
@@ -84,23 +87,27 @@ class App extends React.Component<{}, states> {
       
       }
 
-   
-     
-   
 
-
-
-
- 
-
-
+      
   render() {
-    return (
-      <BrowserRouter >
-    < Route exact path ="/">
-     {localStorage.getItem('token') == "" ? <Auth updateToken={this.updateToken} / > : <Search /> }
-   </Route>
-   </BrowserRouter>
+    return(  (localStorage.getItem('token') == "" ?
+    <div>
+    <Router>
+     <Auth updateToken={this.updateToken}/>
+    </Router>
+    
+    </div>
+    : <Search   /> )
+  
+//    <Switch>
+
+// <Route path="/search">
+//   <Search  Destination={this.state.Destination} From={this.state.From} Date={this.state.Date} />
+// </Route >
+// <Route path="/results">
+//   <Results/>
+// </Route>
+// </Switch>
     )
   }
  
