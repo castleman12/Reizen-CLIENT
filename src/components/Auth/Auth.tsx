@@ -10,7 +10,8 @@ import APIURL from '../../helpers/environment'
 
 interface AcceptedProps {
   updateToken: (token: string) => void
-
+  updateUserId: (userId: string) => void
+  updateRole: (role: string) => void
 }
 
  const layout = {
@@ -23,13 +24,14 @@ const tailLayout = {
 
  type states = {
     updateToken: Function,
-  
+    updateUserId: Function,
+    updateRole: Function,
       email: string,
       password: string,
       userRole: string,
       loginToggler: boolean
       message: string,
-
+      login: boolean
   
 }
 class Login extends Component<AcceptedProps , states > {
@@ -41,8 +43,10 @@ class Login extends Component<AcceptedProps , states > {
          userRole: "user",
          password: "",
          updateToken: new Function,
-    
+        updateUserId: new Function,
+        updateRole: new Function,
          message: "",
+         login: false,
 
         }
         this.onFinish = this.onFinish.bind(this)
@@ -56,15 +60,13 @@ class Login extends Component<AcceptedProps , states > {
         userRole: "user",
         message: "",
         updateToken: this.state.updateToken,
-   
         loginToggler: !this.state.loginToggler,
-
       })
       console.log(this.state.loginToggler)
     }
       onFinish = (values: any) => {
         // values.preventDefault()
-        console.log('Success: ', values)
+     
         {this.state.loginToggler ? 
          fetch(`${APIURL}/user/login`, {
           method: 'POST',
@@ -73,17 +75,19 @@ class Login extends Component<AcceptedProps , states > {
            }), 
            
           body: JSON.stringify({
-            email: this.state.email,
-            password: this.state.password,
+            email: values.email,
+            password: values.password,
           }), 
         })
         .then((response) => response.json())
         .then(data => {
           if(data.sessionToken){
-          this.state.updateToken(data.sessionToken) 
-          .catch(() => console.log("Can’t access response. Blocked by browser?"))
+          this.props.updateToken(data.sessionToken) 
+          this.props.updateUserId(data.userId)
+          this.props.updateRole(data.role)
   
         } })
+        .catch( error => this.setState({message: `Error with connection. Please try again later!`}) )
       :  
        fetch(`${APIURL}/user/register`, {
         method: 'POST',
@@ -99,13 +103,18 @@ class Login extends Component<AcceptedProps , states > {
       .then((response) => response.json())
       .then(data => {
         if(data.sessionToken){
-        this.state.updateToken(data.sessionToken) 
-
-        .catch(() => console.log("Can’t access response. Blocked by browser?"))
-
-        }    
-       
-       })
+        this.props.updateToken(data.sessionToken) 
+        this.props.updateUserId(data.user.id)
+        this.props.updateRole(data.user.userType)
+        this.setState({message: data.message})
+        window.location.reload(true)
+      } else {
+        if (this.state.login) { 
+          this.setState({message: data.error}) 
+      } else {
+          this.setState({message: "Email already in use!"}) 
+      }
+       }})
 }  
     }
       onFinishFailed = (errorInfo: any) => {

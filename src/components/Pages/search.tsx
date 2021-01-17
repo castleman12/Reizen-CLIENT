@@ -1,15 +1,25 @@
 import React, {Component} from 'react';
 import Auth from "../Auth/Auth"
 import './home.css';
-import { Form, Input,Button, Typography,  DatePicker} from 'antd';
+import { Form, Input,Button, Typography,  DatePicker, Menu, Affix} from 'antd';
 import { SearchBar,  WhiteSpace, WingBlank } from 'antd-mobile';
-import { Route, Redirect, Link } from "react-router-dom";
+import { Route, Redirect, Link,  Switch,
+  Router,
+  BrowserRouter} from "react-router-dom";
 import App from '../../App'
 import Results from './results'
 import APISearch from './results'
 import APIURL from '../../helpers/environment'
 import moment from 'moment';
 import { PlacementsConfig } from 'antd/lib/tooltip';
+import './search.css'
+import {MailOutlined, AppstoreOutlined, SettingOutlined} from '@ant-design/icons'
+import Search from './search'
+import SearchResults from './results'
+import './navbar.css'
+import logo from '../assets/MainLogo.png'
+import TripList from './tripList'
+import {createBrowserHistory} from 'history'
 
 
 
@@ -170,15 +180,21 @@ import { PlacementsConfig } from 'antd/lib/tooltip';
   
    type states = {
       
-    
+ 
         FlightTo: string,
         FlightFrom: string,
         ArrivalDate: string,
-        ReturnDate: string
+        ReturnDate: string,
+      
+        role: string | null,
+        logout: Function,
         loginToggler: boolean
         itemToggler: boolean
-        flightToggler: boolean
-  
+        flightToggler: boolean,
+        myFlightToggler: boolean
+          packingList: Array<{
+              packingItems: string | null;
+            }>
     
   }
   class AddTrip extends Component<{}, states > {
@@ -187,12 +203,16 @@ import { PlacementsConfig } from 'antd/lib/tooltip';
           this.state = {
             FlightTo: "",
             FlightFrom: "",
+            role: null,
             ArrivalDate: "",
             ReturnDate: "",
             loginToggler: true,
             itemToggler: true,
             flightToggler: true,
-  
+            myFlightToggler: true,
+            logout: this.state.logout,
+            packingList: []
+    
           }
           this.onFinish = this.onFinish.bind(this)
           this.onFinishFailed = this.onFinishFailed.bind(this)
@@ -264,32 +284,6 @@ import { PlacementsConfig } from 'antd/lib/tooltip';
         ItemCreate = (values: any) => {
           console.log('Success: ', values)
           
-           fetch(`${APIURL}/packingList/create`, {
-            method: 'POST',
-             headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `${localStorage.getItem("token")}`
-             }, 
-            body: JSON.stringify( {
-              TripID: values.TripID
-              }  ), 
-          })
-          .then((response) => response.json())
-          .catch(() => console.log("Can’t access response. Blocked by browser?"))
-         
-        
-          fetch(`${APIURL}/packingList/create`, {
-            method: 'POST',
-             headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `${localStorage.getItem("token")}`
-             }, 
-            body: JSON.stringify( {
-              TripID: values.TripID
-              }  ), 
-          })
-          .then((response) => response.json())
-          .catch(() => console.log("Can’t access response. Blocked by browser?"))
          
           fetch(`${APIURL}/packingItems`, {
             method: 'POST',
@@ -299,11 +293,11 @@ import { PlacementsConfig } from 'antd/lib/tooltip';
              }, 
             body: JSON.stringify( {
               ItemName: values.ItemName,
-              UserID: values.user.id,
-              PackingID: values.PackingID,
+              
+  
               createdAt: "2021-01-13 10:20:15.658-06",
               updatedAt: "2021-01-13 10:20:15.658-06",
-              packingListId: 3
+      
               }  ), 
           })
           .then((response) => response.json())
@@ -311,9 +305,6 @@ import { PlacementsConfig } from 'antd/lib/tooltip';
          
         
         }
-
-
-        
         ItemUpdate = (values: any) => {
           console.log('Success: ', values)
           
@@ -324,12 +315,7 @@ import { PlacementsConfig } from 'antd/lib/tooltip';
               'Authorization': `${localStorage.getItem("token")}`
              }, 
             body: JSON.stringify( {
-              ItemName: values.ItemName,
-              UserID: values.user.id,
-              PackingID: values.PackingID,
-              createdAt: "2021-01-13 10:20:15.658-06",
-              updatedAt: "2021-01-13 10:20:15.658-06",
-              packingListId: 3
+              ItemName: values.ItemName
               }  ), 
           })
           .then((response) => response.json())
@@ -362,7 +348,8 @@ import { PlacementsConfig } from 'antd/lib/tooltip';
             ArrivalDate: "",
             ReturnDate: "",
             loginToggler: !this.state.loginToggler,
-            itemToggler: this.state.itemToggler
+            itemToggler: this.state.itemToggler,
+            myFlightToggler: this.state.myFlightToggler
     
           })
           console.log(this.state.loginToggler)
@@ -376,9 +363,10 @@ import { PlacementsConfig } from 'antd/lib/tooltip';
             ReturnDate: "",
             loginToggler: this.state.loginToggler,
             itemToggler: !this.state.itemToggler,
+            myFlightToggler: this.state.myFlightToggler
     
           })
-          console.log(this.state.loginToggler)
+          console.log(this.state.itemToggler)
         }
         flightToggle = (event: React.MouseEvent<HTMLButtonElement>) => {
           event.preventDefault();
@@ -389,10 +377,25 @@ import { PlacementsConfig } from 'antd/lib/tooltip';
             ReturnDate: "",
             loginToggler: this.state.loginToggler,
             itemToggler: this.state.itemToggler,
-            flightToggler: !this.state.flightToggler
+            flightToggler: !this.state.flightToggler,
+            myFlightToggler: this.state.myFlightToggler
     
           })
-          console.log(this.state.loginToggler)
+          console.log(this.state.flightToggler)
+        }
+        myFlightToggle = (event: React.MouseEvent<HTMLButtonElement>) => {
+          event.preventDefault();
+          this.setState({
+            FlightTo: "",
+            FlightFrom: "",
+            ArrivalDate: "",
+            ReturnDate: "",
+            loginToggler: this.state.loginToggler,
+            itemToggler: this.state.itemToggler,
+            flightToggler: this.state.flightToggler,
+            myFlightToggler: !this.state.myFlightToggler
+          })
+          console.log(this.state.flightToggler)
         }
 onFinishFailed = (errorInfo: any) => {
           console.log('Failed:', errorInfo)
@@ -400,7 +403,20 @@ onFinishFailed = (errorInfo: any) => {
 
         
     render() {
-      return (<div>
+      return (
+
+      <div>
+          <div>
+        <Menu mode="inline">
+          <Menu.Item key="3"><Link to="/tripList">My Flights</Link></Menu.Item>
+          {this.state.role == "admin" ? <Menu.Item key="19"><Link to="/admin">Admin Portal</Link></Menu.Item> : null}
+        </Menu>
+
+        <Switch>
+          <Route exact path="/" render={() => (<Search />)}/>
+          <Route exact path="/tripList" render={() => (<TripList />)}/>
+        </Switch>
+        </div>
        {this.state.loginToggler ? 
            <Form
         {...layout}
@@ -411,7 +427,7 @@ onFinishFailed = (errorInfo: any) => {
           className="form">
           <Form.Item
             label="FlightFrom"
-            name="flightfrom"
+            name="FlightFrom"
             rules={[{ required: true, message: 'Where are you coming from?' }]}>
             <Input />
           </Form.Item>
@@ -436,8 +452,6 @@ onFinishFailed = (errorInfo: any) => {
           <Form.Item {...tailLayout}>  
 <Button  color="inherit" htmlType="submit" id="Submit">Add Flight!</Button> 
           </Form.Item>
-
-
         </Form>
 :
         <Form
@@ -449,7 +463,7 @@ onFinishFailed = (errorInfo: any) => {
           className="form">
           <Form.Item
             label="FlightFrom"
-            name="flightfrom"
+            name="FlightFrom"
             rules={[{ required: true, message: 'Where are you coming from?' }]}>
             <Input onChange={(e) => this.setState({ FlightFrom: e.target.value})}/>
           </Form.Item>
@@ -499,23 +513,11 @@ onFinishFailed = (errorInfo: any) => {
           className="form">
           <Form.Item
             label="ItemName"
-            name="itemname"
+            name="ItemName"
             rules={[{ required: true, message: "What item do you want to add?" }]}>
             <Input />
           </Form.Item>
-          <Form.Item
-            label="UserID"
-            name="userid"
-            rules={[{ required: true, message: 'Insert ID' }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="PackingID"
-            name="packingID"
-            rules={[{ required: true, message: 'What trip is this for?' }]}>
-            <Input />
-            </Form.Item>
-           
+ 
           <Form.Item {...tailLayout}>  
 <Button  color="inherit" htmlType="submit" id="Submit">Add Item!</Button> 
           </Form.Item>
@@ -533,22 +535,10 @@ onFinishFailed = (errorInfo: any) => {
           <Form.Item
             label="ItemName"
             name="itemname"
+            className="formItem"
             rules={[{ required: true, message: "What item do you want to add?" }]}>
-            <Input />
+            <Input  className="formItem"/>
           </Form.Item>
-          <Form.Item
-            label="UserID"
-            name="userid"
-            rules={[{ required: true, message: 'Insert ID' }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="PackingID"
-            name="packingID"
-            rules={[{ required: true, message: 'What trip is this for?' }]}>
-            <Input />
-            </Form.Item>
-           
           <Form.Item {...tailLayout}>  
 <Button  color="inherit" htmlType="submit" id="Submit">Update Item!</Button> 
           </Form.Item>
@@ -560,11 +550,9 @@ onFinishFailed = (errorInfo: any) => {
 <br/>
 <br/>
             <Button onClick={this.ItemDelete}>Delete an Item!</Button>
-
             <Button onClick={this.flightToggle}>See Items!</Button>
               {this.state.flightToggler ?
                           <div>
-            
             {console.log(this.state.FlightFrom.toString)}
             {console.log(this.state.FlightTo.valueOf)}
             {console.log(this.state.ArrivalDate)}

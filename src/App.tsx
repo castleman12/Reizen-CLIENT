@@ -15,6 +15,7 @@ import Search from './components/Pages/search'
 import Results from './components/Pages/results'
 import APISearch from './components/Pages/results'
 import APIURL from './helpers/environment'
+import Navbar from './components/Pages/navbar'
 
 
 
@@ -89,19 +90,26 @@ class App extends React.Component<{}, states> {
       }
 
 
-      
+      logout = () => {
+        localStorage.clear();
+        this.setState({
+          token: null,
+          userId: null,
+          role: null
+        })
+        this.componentDidMount()
+      }
   render() {
     return( 
       
     <div>
+
+      <br/>
 <h1>Reizen</h1>
 <h3>The pretentious travel site</h3>
-    <Router>
-     <Auth updateToken={this.updateToken}/>
-     <Search/>
-    </Router>
-     {/* {localStorage.getItem('token') ?    : null } */}
-     
+  
+      <Router>  {localStorage.getItem('token') ? <Search logout={this.logout} token={this.state.token} role={this.state.role}/>     :<Auth updateToken={this.updateToken} updateUserId={this.updateUserId} updateRole={this.updateRole}/> } 
+     </Router>
     </div>
  
   

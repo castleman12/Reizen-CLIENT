@@ -2,59 +2,64 @@
 // import {
 //   Route,
 //   Link,
-//   Switch
+//   Switch,
+//   Router,
+//   BrowserRouter
 // } from 'react-router-dom'
-// import Home from './Pages/Home';
-// import SearchResults from './Pages/SearchResults';
-// import Watchlist from './Pages/Watchlist'
-// import './Navbar.css'
+// import {Menu, Button, Typography, Affix} from 'antd'
+// import {MailOutlined, AppstoreOutlined, SettingOutlined} from '@ant-design/icons'
+// import Search from './search'
+// import SearchResults from './results'
+// import AddTrip from './search'
+// import './navbar.css'
 // import logo from '../assets/MainLogo.png'
-// import Auth from './Auth/Auth'
+// import Auth from '../Auth/Auth'
+// import TripList from './tripList'
+// import {createBrowserHistory} from 'history'
 
-// type props = {
-//  AuthActive: boolean
+// const history = createBrowserHistory()
+
+// type Props = {
+//   FlightInfo: Array<{
+            
+//     FlightTo: string,
+//     FlightFrom: string,
+//     ArrivalDate: string,
+//     ReturnDate: string,
+//     ItemName: string | null,
+//     id: number,
+// }>
+//  token: string | null,
+//  role: string | null
+//  logout: Function
 // }
 
 
-// class Header extends React.Component<{}, props> {
-//     _isMounted = false
-//     constructor(props: props) {
-//         super(props)
-//         this.state = {
-//             AuthActive: false
-//         }
+// class Nav extends React.Component<Props> {
+//     constructor(props:Props) {
+//     super(props)
 //     }
-
-
-//   authOn = () => {
-//       this.setState({AuthActive: true})
-   
-//   }
-
-//   authOff = () => {
-//     this.setState({AuthActive: false});
-//   }
-
-
-
-
-
-// render() {
-//   return(
-   
+//     clickLogout(e: React.MouseEvent){
+//       this.props.logout()
+//     }
   
-//       <div className="showContent">
+//     render() {
+
+  
+//       return (
+//        <div>
+//         <Menu mode="inline">
+//           <Menu.Item key="3"><Link to="/tripList">My Flights</Link></Menu.Item>
+//           {this.props.role == "admin" ? <Menu.Item key="19"><Link to="/admin">Admin Portal</Link></Menu.Item> : null}
+//         </Menu>
+
 //         <Switch>
-
-//           <Route exact path="/"><Home  clickLogout={this.clickLogout} updateToken={this.updateToken} setSearch={this.setSearch} search={this.search} token={props.token}/></Route>
-//           <Route exact path="/home"><Home clickLogout={props.clickLogout} updateToken={props.updateToken} setSearch={props.setSearch} search={props.search} Link={Link} token={props.token}/></Route>
-//           <Route exact path="/searchresults"><SearchResults search={props.search} token={props.token} authOn={props.authOn} authOff={props.authOff}/></Route>
-//           <Route exact path="/watchlist"><Watchlist token={props.token}/> </Route>
+//           <Route exact path="/" render={() => (<Search />)}/>
+//           <Route exact path="/tripList" render={() => (<TripList />)}/>
 //         </Switch>
-//       </div>
-
-//   )
-// }
-// }
-// }
+//         </div>
+//       )}
+//   }
+  
+// export default Nav
 export{}
