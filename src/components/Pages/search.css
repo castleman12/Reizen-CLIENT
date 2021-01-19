@@ -1,4 +1,15 @@
-Form {
+form {
     color: white
 
 }
+body {
+    color: white;
+  }
+
+  [title="FlightFrom"] {
+    color: white !important;
+  }
+  
+  [title="Password"] {
+    color: white !important;
+  }

@@ -7,9 +7,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-image: url("./assets/pexels-pixabay-220201.jpg");
   background-position: 100% 0;
+  color: white;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+body{ 
+  color: white;
 }

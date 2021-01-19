@@ -83,8 +83,8 @@ class Login extends Component<AcceptedProps , states > {
         .then(data => {
           if(data.sessionToken){
           this.props.updateToken(data.sessionToken) 
-          this.props.updateUserId(data.userId)
-          this.props.updateRole(data.role)
+          this.props.updateUserId(data.user.id)
+          this.props.updateRole(data.user.role)
   
         } })
         .catch( error => this.setState({message: `Error with connection. Please try again later!`}) )
@@ -105,7 +105,7 @@ class Login extends Component<AcceptedProps , states > {
         if(data.sessionToken){
         this.props.updateToken(data.sessionToken) 
         this.props.updateUserId(data.user.id)
-        this.props.updateRole(data.user.userType)
+        this.props.updateRole(data.user.role)
         this.setState({message: data.message})
         window.location.reload(true)
       } else {

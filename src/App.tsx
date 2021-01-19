@@ -1,133 +1,111 @@
-import React from 'react'
-import Home from './components/Pages/home';
-import './App.css';
-import ReactDOM, { render, } from 'react-dom';
-import { DatePicker, message } from 'antd';
-import 'antd/dist/antd.css';
-import './index.css';
-import  { FC } from 'react';
-import { Button } from 'antd';
-import './App.css'; 
-import { Route, BrowserRouter as Router, Redirect, Switch } from "react-router-dom";
-import { Typography, Space } from 'antd';
-import Auth from './components/Auth/Auth'
-import Search from './components/Pages/search'
-import Results from './components/Pages/results'
-import APISearch from './components/Pages/results'
-import APIURL from './helpers/environment'
-import Navbar from './components/Pages/navbar'
-
-
+import React from "react";
+import Home from "./components/Pages/home";
+import "./App.css";
+import ReactDOM, { render } from "react-dom";
+import { DatePicker, message } from "antd";
+import "antd/dist/antd.css";
+import "./index.css";
+import { FC } from "react";
+import { Button } from "antd";
+import "./App.css";
+import {
+  Route,
+  BrowserRouter as Router,
+  Redirect,
+  Switch,
+} from "react-router-dom";
+import { Typography, Space } from "antd";
+import Auth from "./components/Auth/Auth";
+import Search from "./components/Pages/search";
+import Results from "./components/Pages/results";
+import APISearch from "./components/Pages/results";
+import APIURL from "./helpers/environment";
+import NavBar from "./components/Pages/navbar";
 
 const { Text, Link } = Typography;
 
-
-
 type states = {
-  search: string|null,
-  token: string|null,
-  userId: string|null,
-  role: string|null
-  Destination: string
-  From: string
-  Date: string
-  APISearch:Function
-
-
-}
+  token: string | null;
+  userId: string | null;
+  role: string | null;
+};
 class App extends React.Component<{}, states> {
-  _isMounted = false
-  constructor(props: any) {
-      super(props)
-      this.state = {
-    
-      search: null,
+  _isMounted = false;
+  constructor(props: states) {
+    super(props);
+    this.state = {
       token: null,
       userId: null,
       role: null,
-      Date: "",
-      From: "",
-      Destination: "",
-      APISearch: new Function
-
-      } 
-      this.updateToken = this.updateToken.bind(this)
-      this.updateRole = this.updateRole.bind(this)
-      this.updateUserId = this.updateRole.bind(this)
- 
-      
-    }
-    componentWillUnmount(){
-      this._isMounted = false;
+    };
+    this.updateToken = this.updateToken.bind(this);
+    this.updateRole = this.updateRole.bind(this);
+    this.updateUserId = this.updateUserId.bind(this);
+    this.logout = this.logout.bind(this);
   }
-    componentDidMount() {
-      this._isMounted = true;
-      if (localStorage.getItem('token')){
-          this.setState({
-              token: localStorage.getItem('token'),
-              role: localStorage.getItem('role'),
-              userId: localStorage.getItem("userId")
-          });
-        }   
-     
-  }
-      updateToken = (newToken: string) => {
-        this.setState({token: newToken})
-        localStorage.setItem('token', newToken)
-        console.log(this.state.token)
-      }
 
-      updateUserId = (newUserId: string) => {
-        this.setState({userId: newUserId})
-        localStorage.setItem('userId', newUserId)
-      
-      }
+  updateToken = (newToken: string) => {
+    this.setState({ token: newToken });
+    localStorage.setItem("token", newToken);
+    console.log(this.state.token);
+  };
 
-      updateRole = (newRole: string) => {
-        this.setState({role: newRole})
-        localStorage.setItem('role', newRole)
-      
-      }
+  updateUserId = (newUserId: string) => {
+    this.setState({ userId: newUserId });
+    localStorage.setItem("userId", newUserId);
+  };
 
+  updateRole = (newRole: string) => {
+    this.setState({ role: newRole });
+    localStorage.setItem("role", newRole);
+  };
 
-      logout = () => {
-        localStorage.clear();
-        this.setState({
-          token: null,
-          userId: null,
-          role: null
-        })
-        this.componentDidMount()
-      }
+  logout = () => {
+    localStorage.clear();
+    this.setState({
+      token: null,
+      userId: null,
+      role: null,
+    });
+  };
   render() {
-    return( 
-      
-    <div>
+    return (
+      <div>
+        <h1>Reizen</h1>
+        <h3>The pretentious travel site</h3>
+        <Router>
+          <NavBar
+            logout={this.logout}
+            token={this.state.token}
+            role={this.state.role}
+          />
+        </Router>
+        <br />
+        <Router>
+         
+          {localStorage.getItem("token") ? (
+            <Search />
+          ) : (
+            <Auth
+              updateToken={this.updateToken}
+              updateUserId={this.updateUserId}
+              updateRole={this.updateRole}
+            />
+          )}
+        </Router>
+      </div>
 
-      <br/>
-<h1>Reizen</h1>
-<h3>The pretentious travel site</h3>
-  
-      <Router>  {localStorage.getItem('token') ? <Search logout={this.logout} token={this.state.token} role={this.state.role}/>     :<Auth updateToken={this.updateToken} updateUserId={this.updateUserId} updateRole={this.updateRole}/> } 
-     </Router>
-    </div>
- 
-  
-//    <Switch>
+      //    <Switch>
 
-// <Route path="/search">
-//   <Search  Destination={this.state.Destination} From={this.state.From} Date={this.state.Date} />
-// </Route >
-// <Route path="/results">
-//   <Results/>
-// </Route>
-// </Switch>
-    )
+      // <Route path="/search">
+      //   <Search  Destination={this.state.Destination} From={this.state.From} Date={this.state.Date} />
+      // </Route >
+      // <Route path="/results">
+      //   <Results/>
+      // </Route>
+      // </Switch>
+    );
   }
- 
 }
 
-
 export default App;
-
-
